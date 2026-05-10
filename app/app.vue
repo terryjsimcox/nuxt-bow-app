@@ -1,6 +1,19 @@
+<script lang="ts" setup>
+const { theme } = useTheme();
+</script>
+
 <template>
-  <div>
+  <div :data-theme="theme" class="app-container">
     <NuxtRouteAnnouncer />
-    <NuxtWelcome />
+    <NuxtPage />
   </div>
 </template>
+
+<style scoped>
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+</style>
