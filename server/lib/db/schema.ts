@@ -4,7 +4,9 @@ export const user = sqliteTable('user', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
-  emailVerified: integer('emailVerified', { mode: 'boolean' }).notNull().default(false),
+  emailVerified: integer('emailVerified', { mode: 'boolean' })
+    .notNull()
+    .default(false),
   image: text('image'),
   createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
@@ -15,19 +17,29 @@ export const session = sqliteTable('session', {
   expiresAt: integer('expiresAt', { mode: 'timestamp' }).notNull(),
   ipAddress: text('ipAddress'),
   userAgent: text('userAgent'),
-  userId: text('userId').notNull().references(() => user.id),
+  userId: text('userId')
+    .notNull()
+    .references(() => user.id),
+  token: text('token').notNull().unique(),
+  createdAt: integer('createdAt', { mode: 'timestamp' }),
+  updatedAt: integer('updatedAt', { mode: 'timestamp' }),
 });
 
 export const account = sqliteTable('account', {
   id: text('id').primaryKey(),
   accountId: text('accountId').notNull(),
   providerId: text('providerId').notNull(),
-  userId: text('userId').notNull().references(() => user.id),
+  userId: text('userId')
+    .notNull()
+    .references(() => user.id),
   accessToken: text('accessToken'),
   refreshToken: text('refreshToken'),
   idToken: text('idToken'),
   expiresAt: integer('expiresAt', { mode: 'timestamp' }),
   password: text('password'),
+  scope: text('scope'),
+  createdAt: integer('createdAt', { mode: 'timestamp' }),
+  updatedAt: integer('updatedAt', { mode: 'timestamp' }),
 });
 
 export const verification = sqliteTable('verification', {
@@ -35,4 +47,6 @@ export const verification = sqliteTable('verification', {
   identifier: text('identifier').notNull(),
   value: text('value').notNull(),
   expiresAt: integer('expiresAt', { mode: 'timestamp' }).notNull(),
+  createdAt: integer('createdAt', { mode: 'timestamp' }),
+  updatedAt: integer('updatedAt', { mode: 'timestamp' }),
 });

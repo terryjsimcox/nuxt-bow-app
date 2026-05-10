@@ -1,3 +1,5 @@
 import { auth } from '../../lib/auth';
 
-export default auth.handler;
+export default defineEventHandler(async (event) => {
+  return await auth.handler(toWebRequest(event));
+});
