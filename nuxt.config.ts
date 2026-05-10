@@ -9,4 +9,13 @@ export default defineNuxtConfig({
       include: ['@vue/devtools-core', '@vue/devtools-kit'],
     },
   },
+  runtimeConfig: {
+    // Private keys (server-only)
+    dbPath: process.env.NUXT_DB_PATH || 'mydb.sqlite',
+
+    public: {
+      // Public keys (exposed to client)
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
+    },
+  },
 });
