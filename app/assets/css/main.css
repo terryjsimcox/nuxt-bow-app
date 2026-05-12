@@ -1,20 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 :root {
-  --bg-dark-primary: hsl(240, 6%, 10%);
-  --bg-dark-secondary: hsl(240, 5%, 12%);
-  --bg-dark-tertiary: hsl(240, 4%, 14%);
-  --bg-dark-hover: hsl(240, 4%, 16%);
+  /* Brand Colors */
+  --brand-primary: hsl(220, 90%, 56%);
+  --brand-secondary: hsl(280, 70%, 60%);
+  --brand-accent: hsl(170, 75%, 50%);
+
+  /* Dark Theme */
+  --bg-dark-primary: hsl(222, 20%, 11%);
+  --bg-dark-secondary: hsl(222, 20%, 14%);
+  --bg-dark-tertiary: hsl(222, 18%, 18%);
+  --bg-dark-hover: hsl(222, 18%, 22%);
+  --bg-dark-elevated: hsl(222, 20%, 16%);
+
+  /* Light Theme */
   --bg-light-primary: hsl(0, 0%, 100%);
-  --bg-light-secondary: hsl(0, 0%, 98%);
-  --bg-light-tertiary: hsl(0, 0%, 96%);
-  --bg-light-hover: hsl(0, 0%, 95%);
-  --color-primary: hsl(147, 69%, 54%);
-  --color-secondary: hsl(146, 54%, 95%);
-  --text-light-color: hsl(0, 0%, 15%);
-  --text-light-secondary: hsl(0, 0%, 50%);
-  --text-dark-color: hsl(0, 0%, 95%);
-  --border-color-dark: hsl(0, 0%, 20%);
-  --border-color-light: hsl(0, 0%, 90%);
-  --side-panel: 250px;
+  --bg-light-secondary: hsl(220, 15%, 97%);
+  --bg-light-tertiary: hsl(220, 15%, 94%);
+  --bg-light-hover: hsl(220, 15%, 91%);
+  --bg-light-elevated: hsl(0, 0%, 98%);
+
+  /* Typography */
+  --text-dark-primary: hsl(0, 0%, 98%);
+  --text-dark-secondary: hsl(220, 10%, 70%);
+  --text-dark-tertiary: hsl(220, 10%, 55%);
+  --text-light-primary: hsl(222, 20%, 15%);
+  --text-light-secondary: hsl(222, 15%, 45%);
+  --text-light-tertiary: hsl(222, 12%, 60%);
+
+  /* Borders */
+  --border-dark: hsl(222, 18%, 20%);
+  --border-light: hsl(220, 15%, 88%);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -23,10 +68,24 @@
   box-sizing: border-box;
 }
 
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 body {
-  height: 100vh;
-  overflow: hidden;
-  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: -0.011em;
 }
 
 [data-theme='light'] {
@@ -34,17 +93,14 @@ body {
   --bg-secondary: var(--bg-light-secondary);
   --bg-tertiary: var(--bg-light-tertiary);
   --bg-hover: var(--bg-light-hover);
-  --text-primary: var(--text-light-color);
+  --bg-elevated: var(--bg-light-elevated);
+  --text-primary: var(--text-light-primary);
   --text-secondary: var(--text-light-secondary);
-  --border-color: var(--border-color-light);
+  --text-tertiary: var(--text-light-tertiary);
+  --border-color: var(--border-light);
 
   background-color: var(--bg-light-secondary);
-  color: var(--text-light-color);
-}
-
-#side-panel[data-theme='light'] {
-  background-color: var(--bg-light-primary);
-  border-right-color: var(--border-color-light);
+  color: var(--text-light-primary);
 }
 
 [data-theme='dark'] {
@@ -52,15 +108,75 @@ body {
   --bg-secondary: var(--bg-dark-secondary);
   --bg-tertiary: var(--bg-dark-tertiary);
   --bg-hover: var(--bg-dark-hover);
-  --text-primary: var(--text-dark-color);
-  --text-secondary: var(--text-light-secondary);
-  --border-color: var(--border-color-dark);
+  --bg-elevated: var(--bg-dark-elevated);
+  --text-primary: var(--text-dark-primary);
+  --text-secondary: var(--text-dark-secondary);
+  --text-tertiary: var(--text-dark-tertiary);
+  --border-color: var(--border-dark);
 
   background-color: var(--bg-dark-primary);
-  color: var(--text-dark-color);
+  color: var(--text-dark-primary);
 }
 
-#side-panel[data-theme='dark'] {
-  background-color: var(--bg-dark-secondary);
-  border-right-color: var(--border-color-dark);
+/* Utility Classes */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    var(--brand-primary),
+    var(--brand-secondary)
+  );
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-hover);
+}
+
+.card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }

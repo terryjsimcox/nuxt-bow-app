@@ -1,6 +1,4 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { status } from './status';
-import { roles } from './roles';
 
 export const user = sqliteTable('user', {
   id: text('id').primaryKey(),
@@ -10,21 +8,6 @@ export const user = sqliteTable('user', {
     .notNull()
     .default(false),
   image: text('image'),
-  role: integer('role')
-    .notNull()
-    .references(() => roles.id),
-  kmRole: integer('km_role')
-    .default(1)
-    .notNull()
-    .references(() => roles.id),
-  status: integer('status')
-    .notNull()
-    .references(() => status.id),
-  mergedIntoUserId: text('merged_into_user_id', { length: 36 }),
-  mergedIntoScoutId: integer('merged_into_scout_id'),
-  isMergedAlias: integer('is_merged_alias', { mode: 'boolean' })
-    .default(false)
-    .notNull(),
   createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
 });

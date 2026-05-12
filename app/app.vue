@@ -5,7 +5,10 @@ const { theme } = useTheme();
 <template>
   <div :data-theme="theme" class="app-container">
     <NuxtRouteAnnouncer />
-    <NuxtPage />
+    <AppHeader />
+    <main class="main-content">
+      <NuxtPage />
+    </main>
   </div>
 </template>
 
@@ -14,6 +17,9 @@ const { theme } = useTheme();
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
 }
 </style>
