@@ -11,7 +11,7 @@ const signInWithGitHub = async () => {
   try {
     await authClient.signIn.social({
       provider: 'github',
-      callbackURL: '/',
+      callbackURL: '/dashboard',
     });
   } catch (e: any) {
     error.value = e.message || 'Failed to sign in with GitHub';

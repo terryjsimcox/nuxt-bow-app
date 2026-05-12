@@ -3,23 +3,14 @@ const { theme } = useTheme();
 </script>
 
 <template>
-  <div :data-theme="theme" class="app-container">
+  <div :data-theme="theme">
     <NuxtRouteAnnouncer />
-    <AppHeader />
-    <main class="main-content">
+    <NuxtLayout>
       <NuxtPage />
-    </main>
+    </NuxtLayout>
   </div>
 </template>
 
-<style scoped>
-.app-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.main-content {
-  flex: 1;
-}
+<style>
+/* Global styles only */
 </style>

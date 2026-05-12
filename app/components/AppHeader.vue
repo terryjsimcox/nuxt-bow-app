@@ -32,6 +32,9 @@ const signOut = async () => {
         <NuxtLink to="/" class="nav-link">Home</NuxtLink>
         <NuxtLink to="/about" class="nav-link">About</NuxtLink>
         <NuxtLink to="/stories" class="nav-link">Stories</NuxtLink>
+        <NuxtLink v-if="session" to="/dashboard" class="nav-link"
+          >Dashboard</NuxtLink
+        >
       </nav>
 
       <div class="header-actions">
