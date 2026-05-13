@@ -64,8 +64,7 @@ const recentActivity = [
         v-for="stat in stats"
         :key="stat.label"
         class="stat-card"
-        :class="`stat-${stat.color}`"
-      >
+        :class="`stat-${stat.color}`">
         <div class="stat-icon">
           <Icon :name="stat.icon" />
         </div>
@@ -102,8 +101,7 @@ const recentActivity = [
           <div
             v-for="activity in recentActivity"
             :key="activity.title"
-            class="activity-item"
-          >
+            class="activity-item">
             <div class="activity-icon">
               <Icon :name="activity.icon" />
             </div>
@@ -131,6 +129,7 @@ const recentActivity = [
 .dashboard-page {
   width: 100%;
   padding: var(--spacing-xl);
+  overflow-y: auto;
 }
 
 .stats-grid {

@@ -176,8 +176,7 @@ const handleRowClick = (scout: Scout) => {
         :selectable="true"
         :items-per-page="10"
         @select="handleSelection"
-        @row-click="handleRowClick"
-      >
+        @row-click="handleRowClick">
         <!-- Custom cell for clan color -->
         <template #cell-clanColor="{ value }">
           <div class="clan-color-badges">
@@ -186,8 +185,7 @@ const handleRowClick = (scout: Scout) => {
               :key="index"
               class="color-badge"
               :style="{ backgroundColor: color }"
-              :title="color"
-            />
+              :title="color" />
             <span v-if="!value || value.length === 0" class="no-data">N/A</span>
           </div>
         </template>
@@ -217,7 +215,8 @@ const handleRowClick = (scout: Scout) => {
 .dashboard-page {
   width: 100%;
   padding: var(--spacing-xl);
-  min-height: 100vh;
+  min-height: calc(100% - 5rem);
+  overflow-y: auto;
 }
 
 .page-header {
@@ -283,6 +282,8 @@ const handleRowClick = (scout: Scout) => {
 
 .table-container {
   width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .selection-banner {
