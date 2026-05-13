@@ -20,12 +20,11 @@ const handleLinkClick = (event: Event, to: string) => {
 };
 
 const menuItems = [
-  { icon: 'tabler:layout-dashboard', label: 'Dashboard', path: '/dashboard' },
-  { icon: 'tabler:users', label: 'Scouts', path: '/dashboard/scouts' },
-  { icon: 'tabler:certificate', label: 'Beads', path: '/dashboard/beads' },
-  { icon: 'tabler:book', label: 'Stories', path: '/dashboard/stories' },
-  { icon: 'tabler:chart-bar', label: 'Reports', path: '/dashboard/reports' },
-  { icon: 'tabler:settings', label: 'Settings', path: '/dashboard/settings' },
+  { icon: 'tabler:layout-dashboard', label: 'Dashboard', to: '/dashboard' },
+  { icon: 'tabler:users', label: 'Scouts', to: '/dashboard/scouts' },
+  { icon: 'tabler:certificate', label: 'Beads', to: '/dashboard/beads' },
+  { icon: 'tabler:chart-bar', label: 'Reports', to: '/dashboard/reports' },
+  { icon: 'tabler:settings', label: 'Settings', to: '/dashboard/settings' },
 ];
 </script>
 
@@ -37,17 +36,17 @@ const menuItems = [
     </NuxtLink>
 
     <div class="nav-links">
-      <NuxtLink
+      <DashboardNavLinks
         v-for="item in menuItems"
-        :key="item.path"
-        :to="item.path"
+        :key="item.to"
+        :to="item.to"
+        :icon="item.icon"
+        :label="item.label"
+        :open="dashboardStore.isSidebarOpen"
         class="nav-item"
         active-class="active"
-        @click="handleLinkClick($event, item.path)"
-      >
-        <Icon :name="item.icon" class="nav-icon" />
-        <span class="nav-label">{{ item.label }}</span>
-      </NuxtLink>
+        @click="handleLinkClick($event, item.to)"
+      />
     </div>
 
     <div class="user-area">
@@ -79,20 +78,10 @@ const menuItems = [
   width: 60px;
 }
 
-.dashboard-sidebar[data-open='false'] .logo {
-  justify-content: center;
-  padding: var(--spacing-lg) 0;
-}
-
 .dashboard-sidebar[data-open='false'] .logo h3 {
   opacity: 0;
   visibility: hidden;
   width: 0;
-}
-
-.dashboard-sidebar[data-open='false'] .nav-item {
-  justify-content: center;
-  padding: var(--spacing-sm) 0;
 }
 
 .dashboard-sidebar[data-open='false'] .nav-label {
@@ -108,7 +97,6 @@ const menuItems = [
   padding: var(--spacing-sm);
   text-decoration: none;
   overflow: hidden;
-  /* border-bottom: 1px solid var(--border-color); */
   transition: all var(--transition-fast);
 }
 
@@ -144,7 +132,6 @@ const menuItems = [
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-md);
   color: var(--text-secondary);
   text-decoration: none;
@@ -157,17 +144,6 @@ const menuItems = [
 .nav-item:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
-}
-
-.nav-item.active {
-  background: var(--brand-primary);
-  color: white;
-  font-weight: 500;
-}
-
-.nav-icon {
-  font-size: 1.25rem;
-  flex-shrink: 0;
 }
 
 .nav-label {

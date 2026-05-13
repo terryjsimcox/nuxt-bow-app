@@ -47,11 +47,6 @@ onMounted(async () => {
   overflow-y: auto;
   transition: margin-left var(--transition-base);
 }
-
-.main-content.collapsed {
-  margin-left: 60px;
-}
-
 /* Mobile */
 @media (max-width: 768px) {
   .main-content {

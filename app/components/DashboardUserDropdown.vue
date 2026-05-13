@@ -199,7 +199,7 @@ const userInitials = computed(() => {
   align-items: center;
   gap: var(--spacing-sm);
   width: 100%;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-sm);
   justify-content: space-between;
   background-color: transparent;
   color: var(--text-primary);
