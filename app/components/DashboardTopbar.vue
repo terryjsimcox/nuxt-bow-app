@@ -6,14 +6,13 @@ const route = useRoute();
 const pageTitle = computed(() => {
   // Special case for dashboard index
   if (route.name === 'dashboard-index' || route.path === '/dashboard') {
-    return 'Admin Dashboard';
+    return 'Dashboard';
   }
   // Use the route name if available
   if (route.name) {
     return String(route.name)
       .split('-')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))[1];
   }
   // Fallback to path-based title
   const path = route.path.split('/').pop() || '';
@@ -30,12 +29,10 @@ const pageTitle = computed(() => {
       <button
         aria-label="Toggle Sidebar"
         class="toggle-btn"
-        @click="dashboardStore.toggleSidebar()"
-      >
+        @click="dashboardStore.toggleSidebar()">
         <Icon
           v-if="dashboardStore.isSidebarOpen"
-          name="tabler:layout-sidebar-left-collapse"
-        />
+          name="tabler:layout-sidebar-left-collapse" />
         <Icon v-else name="tabler:layout-sidebar-right-collapse" />
       </button>
       <h1 class="page-title">{{ pageTitle }}</h1>
