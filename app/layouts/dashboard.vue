@@ -36,15 +36,15 @@ onMounted(async () => {
 .wrapper {
   display: flex;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  height: 100%;
+  overflow-y: auto;
   transition: margin-left var(--transition-base);
 }
 /* Mobile */

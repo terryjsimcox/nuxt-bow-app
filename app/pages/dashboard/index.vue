@@ -128,6 +128,7 @@ const recentActivity = [
 <style scoped>
 .dashboard-page {
   width: 100%;
+  height: 100%;
   padding: var(--spacing-xl);
   overflow-y: auto;
 }

@@ -26,6 +26,16 @@ const menuItems = [
   { icon: 'tabler:chart-bar', label: 'Reports', to: '/dashboard/reports' },
   { icon: 'tabler:settings', label: 'Settings', to: '/dashboard/settings' },
 ];
+
+const user = computed(() => {
+  return (
+    session.value?.user || {
+      name: 'Terry Simcox',
+      email: 'email@example.com',
+      image: 'https://avatars.githubusercontent.com/u/1234567890?v=4',
+    }
+  );
+});
 </script>
 
 <template>
@@ -45,19 +55,11 @@ const menuItems = [
         :open="dashboardStore.isSidebarOpen"
         class="nav-item"
         active-class="active"
-        @click="handleLinkClick($event, item.to)"
-      />
+        @click="handleLinkClick($event, item.to)" />
     </div>
 
     <div class="user-area">
-      <DashboardUserDropdown
-        v-if="session?.user"
-        :user="{
-          name: session.user.name || 'User',
-          email: session.user.email,
-          image: session.user.image,
-        }"
-      />
+      <DashboardUserDropdown :user="user" />
     </div>
   </nav>
 </template>
@@ -68,7 +70,7 @@ const menuItems = [
   flex-direction: column;
   justify-content: space-between;
   width: 250px;
-  height: 100vh;
+  height: 100%;
   border-right: 1px solid var(--border-color);
   transition: width var(--transition-base);
   background: var(--bg-elevated);

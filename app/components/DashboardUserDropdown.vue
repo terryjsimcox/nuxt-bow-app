@@ -69,8 +69,7 @@ const userInitials = computed(() => {
     <div
       class="dropdown-trigger"
       :data-open="dashboardStore.isSidebarOpen"
-      @click="isOpen = !isOpen"
-    >
+      @click="isOpen = !isOpen">
       <div class="avatar-wrapper">
         <span v-if="!user.image" class="avatar">{{ userInitials }}</span>
         <img v-else :src="user.image" :alt="user.name" class="avatar" />
@@ -82,16 +81,14 @@ const userInitials = computed(() => {
         v-if="dashboardStore.isSidebarOpen"
         name="tabler:chevrons-up-down"
         class="caret"
-        :class="{ open: isOpen }"
-      />
+        :class="{ open: isOpen }" />
     </div>
 
     <Transition name="dropdown">
       <div
         v-if="isOpen"
         :data-open="dashboardStore.isSidebarOpen"
-        class="dropdown-menu"
-      >
+        class="dropdown-menu">
         <!-- Header -->
         <div class="dropdown-header">
           <span v-if="!user.image" class="avatar">{{ userInitials }}</span>
@@ -104,8 +101,7 @@ const userInitials = computed(() => {
           <NuxtLink
             to="/dashboard/profile"
             class="dropdown-item"
-            @click="closeDropdown"
-          >
+            @click="closeDropdown">
             <Icon name="tabler:user" />
             <span>Profile</span>
           </NuxtLink>
@@ -113,8 +109,7 @@ const userInitials = computed(() => {
           <NuxtLink
             to="/dashboard/settings"
             class="dropdown-item"
-            @click="closeDropdown"
-          >
+            @click="closeDropdown">
             <Icon name="tabler:settings" />
             <span>Settings</span>
           </NuxtLink>
@@ -127,8 +122,7 @@ const userInitials = computed(() => {
           <div
             class="dropdown-item submenu-trigger"
             :class="{ 'has-submenu-open': activeSubmenu === 'appearance' }"
-            @click.stop="toggleSubmenu('appearance')"
-          >
+            @click.stop="toggleSubmenu('appearance')">
             <Icon name="tabler:palette" />
             <span>Appearance</span>
             <Icon name="tabler:chevron-right" class="arrow" />
@@ -139,33 +133,28 @@ const userInitials = computed(() => {
             <div
               v-if="activeSubmenu === 'appearance'"
               class="submenu-panel"
-              @click.stop
-            >
+              @click.stop>
               <div
                 class="submenu-item"
                 :class="{ active: theme === 'light' }"
-                @click="selectTheme('light')"
-              >
+                @click="selectTheme('light')">
                 <Icon name="tabler:sun" />
                 <span>Light</span>
                 <Icon
                   v-if="theme === 'light'"
                   name="tabler:check"
-                  class="check-icon"
-                />
+                  class="check-icon" />
               </div>
               <div
                 class="submenu-item"
                 :class="{ active: theme === 'dark' }"
-                @click="selectTheme('dark')"
-              >
+                @click="selectTheme('dark')">
                 <Icon name="tabler:moon" />
                 <span>Dark</span>
                 <Icon
                   v-if="theme === 'dark'"
                   name="tabler:check"
-                  class="check-icon"
-                />
+                  class="check-icon" />
               </div>
             </div>
           </Transition>
@@ -248,7 +237,7 @@ const userInitials = computed(() => {
   bottom: calc(100% + 8px);
   left: calc((250px - 210px) / 2);
   width: 210px;
-  background-color: var(--bg-elevated);
+  background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xl);
