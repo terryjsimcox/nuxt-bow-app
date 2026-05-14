@@ -10,9 +10,9 @@ onMounted(async () => {
     session.value = result.data;
 
     // Redirect to signin if not authenticated
-    // if (!session.value) {
-    //   navigateTo('/signin');
-    // }
+    if (!session.value) {
+      navigateTo('/signin');
+    }
   } catch (error) {
     console.error('Failed to fetch session:', error);
     navigateTo('/signin');
@@ -25,7 +25,8 @@ onMounted(async () => {
     <DashboardSidebar />
     <main
       class="main-content"
-      :class="{ collapsed: !dashboardStore.isSidebarOpen }">
+      :class="{ collapsed: !dashboardStore.isSidebarOpen }"
+    >
       <DashboardTopbar />
       <NuxtPage />
     </main>

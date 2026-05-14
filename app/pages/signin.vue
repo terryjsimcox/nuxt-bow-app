@@ -1,11 +1,18 @@
 <script lang="ts" setup>
-// Check if user is already signed in
-const { data: session } = await useFetch('/api/auth/get-session');
+const authClient = useAuthClient();
 
-// Redirect to home if already authenticated
-if (session.value) {
-  navigateTo('/');
-}
+// Check if user is already authenticated after OAuth callback
+onMounted(async () => {
+  try {
+    const { data } = await authClient.getSession();
+    if (data) {
+      // User is authenticated, redirect to dashboard
+      navigateTo('/dashboard');
+    }
+  } catch (error) {
+    // Not authenticated, stay on signin page
+  }
+});
 </script>
 
 <template>
