@@ -24,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   select: [items: T[]];
   rowClick: [item: T];
+  rowDblclick: [item: T];
 }>();
 
 // State
@@ -255,6 +256,7 @@ watch(
               ),
             }"
             @click="emit('rowClick', row)"
+            @dblclick="emit('rowDblclick', row)"
           >
             <td v-if="selectable" class="select-column">
               <input

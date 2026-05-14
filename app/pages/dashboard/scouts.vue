@@ -3,7 +3,7 @@ definePageMeta({
   layout: 'dashboard',
 });
 
-interface Scout {
+export interface Scout {
   firstName: string;
   lastName: string;
   unitNumber: number;
@@ -128,17 +128,129 @@ const scouts = ref<Scout[]>([
     clanColor: [],
     ceremonyDate: '2025-10-02',
   },
+  {
+    firstName: 'Andrew',
+    lastName: 'Coughlin',
+    unitNumber: 442,
+    scoutingAmericaId: '8114714',
+    scoutType: 'Adult',
+    clanCharacter: 'Eagle',
+    clanColor: ['#10B981', '#EF4444', '#10B981'],
+    ceremonyDate: '2025-10-02',
+  },
+  {
+    firstName: 'Riz',
+    lastName: 'Coughlin',
+    unitNumber: 442,
+    scoutingAmericaId: '11678200',
+    scoutType: 'Adult',
+    clanCharacter: 'Fox',
+    clanColor: ['#10B981', '#EF4444', '#10B981'],
+    ceremonyDate: '2025-10-02',
+  },
+  {
+    firstName: 'Benjamin',
+    lastName: 'Coughlin',
+    unitNumber: 442,
+    scoutingAmericaId: '14748911',
+    scoutType: 'Youth',
+    clanCharacter: 'Eagle',
+    clanColor: ['#10B981', '#EF4444', '#10B981'],
+    ceremonyDate: null,
+  },
+  {
+    firstName: 'Emma',
+    lastName: 'Coughlin',
+    unitNumber: 443,
+    scoutingAmericaId: '',
+    scoutType: 'Youth',
+    clanCharacter: 'Eagle',
+    clanColor: ['#FFFFFF', '#EF4444', '#FFFFFF'],
+    ceremonyDate: null,
+  },
+  {
+    firstName: 'Sherri',
+    lastName: 'Coughlin',
+    unitNumber: 443,
+    scoutingAmericaId: '',
+    scoutType: 'Adult',
+    clanCharacter: 'Eagle',
+    clanColor: ['#FFFFFF', '#EF4444', '#FFFFFF'],
+    ceremonyDate: null,
+  },
+  {
+    firstName: 'John',
+    lastName: 'Doe',
+    unitNumber: 439,
+    scoutingAmericaId: '12345',
+    scoutType: 'Youth',
+    clanCharacter: 'Bobwhite',
+    clanColor: ['#EF4444', '#3B82F6', '#EF4444'],
+    ceremonyDate: '2025-10-02',
+  },
+  {
+    firstName: 'Luz',
+    lastName: 'Smith',
+    unitNumber: 319,
+    scoutingAmericaId: '67890',
+    scoutType: 'Youth',
+    clanCharacter: 'Bear',
+    clanColor: ['#3B82F6', '#F59E0B', '#FFFFFF'],
+    ceremonyDate: '2025-10-02',
+  },
+  {
+    firstName: 'Michael',
+    lastName: 'Harris',
+    unitNumber: 82,
+    scoutingAmericaId: '49123',
+    scoutType: 'Youth',
+    clanCharacter: 'Buffalo',
+    clanColor: ['#10B981', '#3B82F6', '#10B981'],
+    ceremonyDate: '2025-10-02',
+  },
+  {
+    firstName: 'Emily',
+    lastName: 'Rivers',
+    unitNumber: 443,
+    scoutingAmericaId: '98342',
+    scoutType: 'Adult',
+    clanCharacter: 'Eagle',
+    clanColor: ['#FFFFFF', '#F59E0B', '#FFFFFF'],
+    ceremonyDate: '2025-10-02',
+  },
+  {
+    firstName: 'Daniel',
+    lastName: 'Brooks',
+    unitNumber: 427,
+    scoutingAmericaId: '77412',
+    scoutType: 'Youth',
+    clanCharacter: 'Bobwhite',
+    clanColor: [],
+    ceremonyDate: '2025-10-02',
+  },
 ]);
 
 const selectedScouts = ref<Scout[]>([]);
+const isDrawerOpen = ref(false);
+const selectedScout = ref<Scout | null>(null);
+const activeTab = ref('personal');
 
 const handleSelection = (selected: Scout[]) => {
   selectedScouts.value = selected;
 };
 
 const handleRowClick = (scout: Scout) => {
-  console.log('Clicked scout:', scout);
-  // Add navigation or modal logic here
+  console.log('Double clicked scout:', scout);
+  selectedScout.value = scout;
+  isDrawerOpen.value = true;
+  activeTab.value = 'personal';
+};
+
+const closeDrawer = () => {
+  isDrawerOpen.value = false;
+  setTimeout(() => {
+    selectedScout.value = null;
+  }, 300); // Wait for animation to complete
 };
 </script>
 
@@ -176,7 +288,8 @@ const handleRowClick = (scout: Scout) => {
         :selectable="true"
         :items-per-page="10"
         @select="handleSelection"
-        @row-click="handleRowClick">
+        @row-dblclick="handleRowClick"
+      >
         <!-- Custom cell for clan color -->
         <template #cell-clanColor="{ value }">
           <div class="clan-color-badges">
@@ -185,7 +298,8 @@ const handleRowClick = (scout: Scout) => {
               :key="index"
               class="color-badge"
               :style="{ backgroundColor: color }"
-              :title="color" />
+              :title="color"
+            />
             <span v-if="!value || value.length === 0" class="no-data">N/A</span>
           </div>
         </template>
@@ -208,13 +322,22 @@ const handleRowClick = (scout: Scout) => {
         </template>
       </DataTable>
     </div>
+
+    <!-- Scout Details Drawer -->
+    <ScoutDrawer
+      v-if="isDrawerOpen"
+      :isDrawerOpen="isDrawerOpen"
+      :selectedScout="selectedScout"
+      v-model:activeTab="activeTab"
+      :closeDrawer="closeDrawer"
+    />
   </div>
 </template>
 
 <style scoped>
 .dashboard-page {
   width: 100%;
-  padding: var(--spacing-xl);
+  padding: var(--spacing-lg);
   min-height: calc(100% - 5rem);
   overflow-y: auto;
 }
