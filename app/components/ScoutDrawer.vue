@@ -29,16 +29,14 @@ const localActiveTab = computed({
             </h2>
             <span
               class="scout-type-badge"
-              :class="selectedScout?.scoutType.toLowerCase()"
-            >
+              :class="selectedScout?.scoutType.toLowerCase()">
               {{ selectedScout?.scoutType }}
             </span>
           </div>
           <button
             class="close-btn"
             @click="closeDrawer"
-            aria-label="Close drawer"
-          >
+            aria-label="Close drawer">
             <Icon name="tabler:x" />
           </button>
         </div>
@@ -55,8 +53,7 @@ const localActiveTab = computed({
             ]"
             :key="tab"
             :class="['tab-btn', { active: localActiveTab === tab }]"
-            @click="localActiveTab = tab"
-          >
+            @click="localActiveTab = tab">
             <Icon
               :name="
                 tab === 'personal'
@@ -70,8 +67,7 @@ const localActiveTab = computed({
                         : tab === 'beads'
                           ? 'tabler:circle-dot'
                           : 'tabler:clock'
-              "
-            />
+              " />
             {{ tab.charAt(0).toUpperCase() + tab.slice(1) }}
           </button>
         </div>
@@ -139,15 +135,13 @@ const localActiveTab = computed({
                   :key="index"
                   class="color-badge large"
                   :style="{ backgroundColor: color }"
-                  :title="color"
-                />
+                  :title="color" />
                 <span
                   v-if="
                     !selectedScout?.clanColor ||
                     selectedScout.clanColor.length === 0
                   "
-                  class="no-data"
-                >
+                  class="no-data">
                   N/A
                 </span>
               </div>
@@ -198,25 +192,14 @@ const localActiveTab = computed({
   box-shadow: var(--shadow-xl);
 }
 
-[data-theme='light'] .drawer {
-  background-color: hsl(0, 0%, 100%);
-}
-
 .drawer-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   padding: var(--spacing-xl);
-  border-bottom: 1px solid var(--border-color);
-  background-color: hsl(222, 20%, 16%);
-  background: var(--bg-elevated);
   position: sticky;
   top: 0;
   z-index: 10;
-}
-
-[data-theme='light'] .drawer-header {
-  background-color: hsl(0, 0%, 98%);
 }
 
 .drawer-title {
@@ -273,8 +256,8 @@ const localActiveTab = computed({
 }
 
 .close-btn svg {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
 }
 
 .drawer-tabs {
@@ -288,10 +271,6 @@ const localActiveTab = computed({
   position: sticky;
   top: 81px;
   z-index: 10;
-}
-
-[data-theme='light'] .drawer-tabs {
-  background-color: hsl(0, 0%, 100%);
 }
 
 .tab-btn {

@@ -1,23 +1,6 @@
 <script lang="ts" setup>
 const { theme } = useTheme();
-const authClient = useAuthClient();
-const session = ref<any>(null);
 const dashboardStore = useDashboardStore();
-
-onMounted(async () => {
-  try {
-    const result = await authClient.getSession();
-    session.value = result.data;
-
-    // Redirect to signin if not authenticated
-    if (!session.value) {
-      navigateTo('/signin');
-    }
-  } catch (error) {
-    console.error('Failed to fetch session:', error);
-    navigateTo('/signin');
-  }
-});
 </script>
 
 <template>
@@ -25,8 +8,7 @@ onMounted(async () => {
     <DashboardSidebar />
     <main
       class="main-content"
-      :class="{ collapsed: !dashboardStore.isSidebarOpen }"
-    >
+      :class="{ collapsed: !dashboardStore.isSidebarOpen }">
       <DashboardTopbar />
       <NuxtPage />
     </main>
