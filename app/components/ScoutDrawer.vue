@@ -16,10 +16,19 @@ const localActiveTab = computed({
   get: () => props.activeTab,
   set: (value) => emit('update:activeTab', value),
 });
+
+const tabs = [
+  { id: 'personal', label: 'Personal', icon: 'tabler:user' },
+  { id: 'contact', label: 'Contact', icon: 'tabler:phone' },
+  { id: 'scouting', label: 'Scouting', icon: 'tabler:flag' },
+  { id: 'units', label: 'Units', icon: 'tabler:users-group' },
+  { id: 'beads', label: 'Beads', icon: 'tabler:circle-dot' },
+  { id: 'history', label: 'History', icon: 'tabler:clock' },
+] as const;
 </script>
 
 <template>
-  <Transition name="drawer">
+  <Transition name="drawer" appear>
     <div v-if="isDrawerOpen" class="drawer-overlay" @click="closeDrawer">
       <div class="drawer" @click.stop>
         <div class="drawer-header">
@@ -29,46 +38,29 @@ const localActiveTab = computed({
             </h2>
             <span
               class="scout-type-badge"
-              :class="selectedScout?.scoutType.toLowerCase()">
+              :class="selectedScout?.scoutType.toLowerCase()"
+            >
               {{ selectedScout?.scoutType }}
             </span>
           </div>
           <button
             class="close-btn"
             @click="closeDrawer"
-            aria-label="Close drawer">
+            aria-label="Close drawer"
+          >
             <Icon name="tabler:x" />
           </button>
         </div>
 
         <div class="drawer-tabs">
           <button
-            v-for="tab in [
-              'personal',
-              'contact',
-              'scouting',
-              'units',
-              'beads',
-              'history',
-            ]"
-            :key="tab"
-            :class="['tab-btn', { active: localActiveTab === tab }]"
-            @click="localActiveTab = tab">
-            <Icon
-              :name="
-                tab === 'personal'
-                  ? 'tabler:user'
-                  : tab === 'contact'
-                    ? 'tabler:phone'
-                    : tab === 'scouting'
-                      ? 'tabler:flag'
-                      : tab === 'units'
-                        ? 'tabler:users-group'
-                        : tab === 'beads'
-                          ? 'tabler:circle-dot'
-                          : 'tabler:clock'
-              " />
-            {{ tab.charAt(0).toUpperCase() + tab.slice(1) }}
+            v-for="tab in tabs"
+            :key="tab.id"
+            :class="['tab-btn', { active: localActiveTab === tab.id }]"
+            @click="localActiveTab = tab.id"
+          >
+            <Icon :name="tab.icon" />
+            {{ tab.label }}
           </button>
         </div>
 
@@ -92,12 +84,8 @@ const localActiveTab = computed({
               <p>{{ selectedScout?.ceremonyDate || 'Not specified' }}</p>
             </div>
             <div class="detail-group">
-              <label>Clan Name</label>
-              <p>{{ selectedScout?.clanCharacter || 'Not specified' }}</p>
-            </div>
-            <div class="detail-group">
               <label>Clan Character</label>
-              <p>{{ selectedScout?.clanCharacter }}</p>
+              <p>{{ selectedScout?.clanCharacter || 'Not specified' }}</p>
             </div>
           </div>
 
@@ -135,13 +123,15 @@ const localActiveTab = computed({
                   :key="index"
                   class="color-badge large"
                   :style="{ backgroundColor: color }"
-                  :title="color" />
+                  :title="color"
+                />
                 <span
                   v-if="
                     !selectedScout?.clanColor ||
                     selectedScout.clanColor.length === 0
                   "
-                  class="no-data">
+                  class="no-data"
+                >
                   N/A
                 </span>
               </div>
@@ -182,7 +172,7 @@ const localActiveTab = computed({
 }
 
 .drawer {
-  width: 600px;
+  width: 800px;
   max-width: 100%;
   background: var(--bg-primary);
   height: 100vh;
@@ -196,7 +186,7 @@ const localActiveTab = computed({
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: var(--spacing-xl);
+  padding: var(--spacing-xl) var(--spacing-lg) 0 var(--spacing-lg);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -261,10 +251,24 @@ const localActiveTab = computed({
 }
 
 .drawer-tabs {
+  --radius-start: radial-gradient(
+    circle at 0 0,
+    transparent 0,
+    transparent var(--tab-radius-limit),
+    var(--bg-elevated) calc(var(--tab-radius-limit) + 1px)
+  );
+  --radius-end: radial-gradient(
+    circle at 100% 0,
+    transparent 0,
+    transparent var(--tab-radius-limit),
+    var(--bg-elevated) calc(var(--tab-radius-limit) + 1px)
+  );
+  --tab-radius-limit: 0.75rem;
+
   display: flex;
   gap: var(--spacing-xs);
-  padding: var(--spacing-md) var(--spacing-xl);
-  border-bottom: 1px solid var(--border-color);
+  padding: 0 var(--spacing-lg);
+  padding-top: var(--spacing-md);
   background-color: hsl(222, 20%, 11%);
   background: var(--bg-primary);
   overflow-x: auto;
@@ -273,30 +277,78 @@ const localActiveTab = computed({
   z-index: 10;
 }
 
+[data-theme='light'] .drawer-tabs {
+  --radius-start: radial-gradient(
+    circle at 0 0,
+    transparent 0,
+    transparent var(--tab-radius-limit),
+    hsl(220, 15%, 98%) calc(var(--tab-radius-limit) + 1px)
+  );
+  --radius-end: radial-gradient(
+    circle at 100% 0,
+    transparent 0,
+    transparent var(--tab-radius-limit),
+    hsl(220, 15%, 98%) calc(var(--tab-radius-limit) + 1px)
+  );
+
+  background-color: hsl(220, 15%, 95%);
+}
+
 .tab-btn {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: none;
-  background: transparent;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: 1px solid transparent;
+  background: var(--bg-secondary);
   color: var(--text-secondary);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   transition: all var(--transition-fast);
   white-space: nowrap;
+  position: relative;
+  border-bottom: none;
 }
 
 .tab-btn:hover {
-  background: var(--bg-secondary);
+  background: var(--bg-hover);
   color: var(--text-primary);
 }
 
 .tab-btn.active {
-  background: var(--brand-primary);
-  color: white;
+  background: var(--bg-elevated);
+  color: var(--brand-primary);
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+  z-index: 2;
+}
+
+.tab-btn.active::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: calc(-1 * var(--tab-radius-limit));
+  width: var(--tab-radius-limit);
+  height: var(--tab-radius-limit);
+  background: var(--radius-start);
+  pointer-events: none;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: calc(-1 * var(--tab-radius-limit));
+  width: var(--tab-radius-limit);
+  height: var(--tab-radius-limit);
+  background: var(--radius-end);
+  pointer-events: none;
+}
+
+.tab-btn.active:first-child::before {
+  display: none;
 }
 
 .tab-btn svg {
@@ -308,12 +360,15 @@ const localActiveTab = computed({
   flex: 1;
   padding: var(--spacing-xl);
   overflow-y: auto;
-  background-color: hsl(222, 20%, 11%);
-  background: var(--bg-primary);
+  background-color: hsl(222, 20%, 16%);
+  background: var(--bg-elevated);
+  margin: 0 var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) var(--radius-lg);
 }
 
 [data-theme='light'] .drawer-content {
-  background-color: hsl(0, 0%, 100%);
+  background-color: hsl(220, 15%, 98%);
 }
 
 .tab-panel {
@@ -321,17 +376,6 @@ const localActiveTab = computed({
   flex-direction: column;
   gap: var(--spacing-lg);
   animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .detail-group {
@@ -396,7 +440,7 @@ const localActiveTab = computed({
   align-items: center;
   justify-content: flex-end;
   gap: var(--spacing-md);
-  padding: var(--spacing-xl);
+  padding: var(--spacing-sm);
   border-top: 1px solid var(--border-color);
   background-color: hsl(222, 20%, 16%);
   background: var(--bg-elevated);
@@ -405,7 +449,7 @@ const localActiveTab = computed({
 }
 
 [data-theme='light'] .drawer-footer {
-  background-color: hsl(0, 0%, 98%);
+  background-color: hsl(220, 15%, 98%);
 }
 
 .action-btn {
@@ -442,7 +486,7 @@ const localActiveTab = computed({
   border-color: var(--text-tertiary);
 }
 
-/* Drawer Transitions */
+/* Overlay Transitions */
 .drawer-enter-active,
 .drawer-leave-active {
   transition: opacity 0.3s ease;
@@ -450,7 +494,7 @@ const localActiveTab = computed({
 
 .drawer-enter-active .drawer,
 .drawer-leave-active .drawer {
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .drawer-enter-from,

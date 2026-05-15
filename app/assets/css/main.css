@@ -14,23 +14,23 @@
   --bg-dark-elevated: hsl(222, 20%, 16%);
 
   /* Light Theme */
-  --bg-light-primary: hsl(0, 0%, 100%);
-  --bg-light-secondary: hsl(220, 15%, 97%);
-  --bg-light-tertiary: hsl(220, 15%, 94%);
-  --bg-light-hover: hsl(220, 15%, 91%);
-  --bg-light-elevated: hsl(0, 0%, 98%);
+  --bg-light-primary: hsl(220, 15%, 95%);
+  --bg-light-secondary: hsl(220, 15%, 90%);
+  --bg-light-tertiary: hsl(220, 15%, 85%);
+  --bg-light-hover: hsl(220, 15%, 80%);
+  --bg-light-elevated: hsl(220, 15%, 98%);
 
   /* Typography */
   --text-dark-primary: hsl(0, 0%, 98%);
   --text-dark-secondary: hsl(220, 10%, 70%);
   --text-dark-tertiary: hsl(220, 10%, 55%);
-  --text-light-primary: hsl(222, 20%, 15%);
-  --text-light-secondary: hsl(222, 15%, 45%);
-  --text-light-tertiary: hsl(222, 12%, 60%);
+  --text-light-primary: hsl(222, 25%, 12%);
+  --text-light-secondary: hsl(222, 20%, 38%);
+  --text-light-tertiary: hsl(222, 15%, 52%);
 
   /* Borders */
   --border-dark: hsl(222, 18%, 20%);
-  --border-light: hsl(220, 15%, 88%);
+  --border-light: hsl(220, 15%, 78%);
 
   /* Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);

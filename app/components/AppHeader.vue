@@ -79,7 +79,7 @@ const signOut = async () => {
 }
 
 [data-theme='light'] .header {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(229, 232, 239, 0.8);
 }
 
 .header-content {
