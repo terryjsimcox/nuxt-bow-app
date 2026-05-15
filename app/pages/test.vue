@@ -171,7 +171,7 @@ const closeDrawer = () => {
     </div>
 
     <div class="table-container">
-      <div v-if="selectedScouts.length > 0" class="selection-banner">
+      <!-- <div v-if="selectedScouts.length > 0" class="selection-banner">
         <span
           >{{ selectedScouts.length }} of {{ scouts.length }} row(s)
           selected.</span
@@ -179,7 +179,7 @@ const closeDrawer = () => {
         <button class="link-btn" @click="selectedScouts = []">
           Clear selection
         </button>
-      </div>
+      </div> -->
 
       <DataTable
         :columns="columns"
@@ -188,7 +188,8 @@ const closeDrawer = () => {
         :selectable="true"
         :items-per-page="10"
         @select="handleSelection"
-        @row-dblclick="handleRowClick">
+        @row-dblclick="handleRowClick"
+      >
         <!-- Custom cell for clan color -->
         <template #cell-clanColor="{ value }">
           <div class="clan-color-badges">
@@ -197,7 +198,8 @@ const closeDrawer = () => {
               :key="index"
               class="color-badge"
               :style="{ backgroundColor: color }"
-              :title="color" />
+              :title="color"
+            />
             <span v-if="!value || value.length === 0" class="no-data">N/A</span>
           </div>
         </template>
@@ -227,7 +229,8 @@ const closeDrawer = () => {
       :isDrawerOpen="isDrawerOpen"
       :selectedScout="selectedScout"
       v-model:activeTab="activeTab"
-      :closeDrawer="closeDrawer" />
+      :closeDrawer="closeDrawer"
+    />
   </div>
 </template>
 

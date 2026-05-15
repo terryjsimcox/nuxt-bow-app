@@ -1,14 +1,14 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
-import Database from 'better-sqlite3';
+import { drizzle } from 'drizzle-orm/mysql2';
+import { migrate } from 'drizzle-orm/mysql2/migrator';
+import mysql from 'mysql2/promise';
 
-const sqlite = new Database('mydb.sqlite');
-const db = drizzle(sqlite);
+const connection = await mysql.createConnection(process.env.DATABASE_URL!);
+const db = drizzle(connection);
 
 console.log('Running migrations...');
 
-migrate(db, { migrationsFolder: './server/lib/db/migrations' });
+await migrate(db, { migrationsFolder: './server/lib/db/migrations' });
 
 console.log('Migrations complete!');
 
-sqlite.close();
+await connection.end();

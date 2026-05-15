@@ -8,6 +8,21 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: ['@vue/devtools-core', '@vue/devtools-kit', 'better-auth/vue'],
     },
+    server: {
+      watch: {
+        // Exclude database schemas from file watching to reduce memory usage
+        ignored: [
+          '**/server/lib/db/schemas/**',
+          '**/server/lib/db/migrations/**',
+        ],
+      },
+    },
+  },
+  nitro: {
+    // Optimize server-side memory usage
+    experimental: {
+      wasm: false,
+    },
   },
   runtimeConfig: {
     // Private keys (server-only)

@@ -4,231 +4,63 @@ definePageMeta({
 });
 
 export interface Scout {
+  id: number;
   firstName: string;
   lastName: string;
-  unitNumber: number;
-  scoutingAmericaId: string;
-  scoutType: string;
-  clanCharacter: string;
-  clanColor: string[];
+  email: string;
+  phone: string | null;
   ceremonyDate: string | null;
+  scoutingAmericaId: number | null;
+  status: number;
+  scoutType: {
+    id: number;
+    name: string;
+  } | null;
+  clanCharacter: {
+    id: number;
+    name: string;
+  } | null;
+  units: {
+    scoutId: number;
+    unitId: number;
+    isPrimary: number;
+    joinedAt: string | null;
+    leftAt: string | null;
+    unitNumber: string | null;
+    unitLeader: string | null;
+    unitTypeName: string | null;
+  }[];
+  awards: {
+    scoutId: number;
+    beadId: number;
+    awardedAt: string;
+    dateEarned: string;
+    event: string | null;
+    quantity: number;
+    notes: string | null;
+    beadName: string | null;
+    beadDescription: string | null;
+  }[];
+  createdAt: string;
+  updatedAt: string;
 }
+
+// Fetch scouts from the API
+const { data: scoutsResponse, pending, error } = await useFetch('/api/scouts');
+
+const scouts = computed(() => scoutsResponse.value?.data || []);
 
 // Table columns configuration
 const columns = [
   { key: 'firstName', label: 'First Name', sortable: true },
   { key: 'lastName', label: 'Last Name', sortable: true },
-  { key: 'unitNumber', label: 'Unit Number', sortable: true },
-  { key: 'scoutingAmericaId', label: 'Scouting America ID', sortable: true },
+  { key: 'email', label: 'Email', sortable: true },
+  { key: 'phone', label: 'Phone', sortable: true },
+  { key: 'scoutingAmericaId', label: 'BSA ID', sortable: true },
   { key: 'scoutType', label: 'Scout Type', sortable: true },
-  { key: 'clanCharacter', label: 'Clan Character', sortable: true },
-  { key: 'clanColor', label: 'Clan Color', sortable: false },
+  { key: 'clanCharacter', label: 'Clan', sortable: true },
   { key: 'ceremonyDate', label: 'Ceremony Date', sortable: true },
 ];
-
-// Sample scout data
-const scouts = ref<Scout[]>([
-  {
-    firstName: 'Andrew',
-    lastName: 'Coughlin',
-    unitNumber: 442,
-    scoutingAmericaId: '8114714',
-    scoutType: 'Adult',
-    clanCharacter: 'Eagle',
-    clanColor: ['#10B981', '#EF4444', '#10B981'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Riz',
-    lastName: 'Coughlin',
-    unitNumber: 442,
-    scoutingAmericaId: '11678200',
-    scoutType: 'Adult',
-    clanCharacter: 'Fox',
-    clanColor: ['#10B981', '#EF4444', '#10B981'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Benjamin',
-    lastName: 'Coughlin',
-    unitNumber: 442,
-    scoutingAmericaId: '14748911',
-    scoutType: 'Youth',
-    clanCharacter: 'Eagle',
-    clanColor: ['#10B981', '#EF4444', '#10B981'],
-    ceremonyDate: null,
-  },
-  {
-    firstName: 'Emma',
-    lastName: 'Coughlin',
-    unitNumber: 443,
-    scoutingAmericaId: '',
-    scoutType: 'Youth',
-    clanCharacter: 'Eagle',
-    clanColor: ['#FFFFFF', '#EF4444', '#FFFFFF'],
-    ceremonyDate: null,
-  },
-  {
-    firstName: 'Sherri',
-    lastName: 'Coughlin',
-    unitNumber: 443,
-    scoutingAmericaId: '',
-    scoutType: 'Adult',
-    clanCharacter: 'Eagle',
-    clanColor: ['#FFFFFF', '#EF4444', '#FFFFFF'],
-    ceremonyDate: null,
-  },
-  {
-    firstName: 'John',
-    lastName: 'Doe',
-    unitNumber: 439,
-    scoutingAmericaId: '12345',
-    scoutType: 'Youth',
-    clanCharacter: 'Bobwhite',
-    clanColor: ['#EF4444', '#3B82F6', '#EF4444'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Luz',
-    lastName: 'Smith',
-    unitNumber: 319,
-    scoutingAmericaId: '67890',
-    scoutType: 'Youth',
-    clanCharacter: 'Bear',
-    clanColor: ['#3B82F6', '#F59E0B', '#FFFFFF'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Michael',
-    lastName: 'Harris',
-    unitNumber: 82,
-    scoutingAmericaId: '49123',
-    scoutType: 'Youth',
-    clanCharacter: 'Buffalo',
-    clanColor: ['#10B981', '#3B82F6', '#10B981'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Emily',
-    lastName: 'Rivers',
-    unitNumber: 443,
-    scoutingAmericaId: '98342',
-    scoutType: 'Adult',
-    clanCharacter: 'Eagle',
-    clanColor: ['#FFFFFF', '#F59E0B', '#FFFFFF'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Daniel',
-    lastName: 'Brooks',
-    unitNumber: 427,
-    scoutingAmericaId: '77412',
-    scoutType: 'Youth',
-    clanCharacter: 'Bobwhite',
-    clanColor: [],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Andrew',
-    lastName: 'Coughlin',
-    unitNumber: 442,
-    scoutingAmericaId: '8114714',
-    scoutType: 'Adult',
-    clanCharacter: 'Eagle',
-    clanColor: ['#10B981', '#EF4444', '#10B981'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Riz',
-    lastName: 'Coughlin',
-    unitNumber: 442,
-    scoutingAmericaId: '11678200',
-    scoutType: 'Adult',
-    clanCharacter: 'Fox',
-    clanColor: ['#10B981', '#EF4444', '#10B981'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Benjamin',
-    lastName: 'Coughlin',
-    unitNumber: 442,
-    scoutingAmericaId: '14748911',
-    scoutType: 'Youth',
-    clanCharacter: 'Eagle',
-    clanColor: ['#10B981', '#EF4444', '#10B981'],
-    ceremonyDate: null,
-  },
-  {
-    firstName: 'Emma',
-    lastName: 'Coughlin',
-    unitNumber: 443,
-    scoutingAmericaId: '',
-    scoutType: 'Youth',
-    clanCharacter: 'Eagle',
-    clanColor: ['#FFFFFF', '#EF4444', '#FFFFFF'],
-    ceremonyDate: null,
-  },
-  {
-    firstName: 'Sherri',
-    lastName: 'Coughlin',
-    unitNumber: 443,
-    scoutingAmericaId: '',
-    scoutType: 'Adult',
-    clanCharacter: 'Eagle',
-    clanColor: ['#FFFFFF', '#EF4444', '#FFFFFF'],
-    ceremonyDate: null,
-  },
-  {
-    firstName: 'John',
-    lastName: 'Doe',
-    unitNumber: 439,
-    scoutingAmericaId: '12345',
-    scoutType: 'Youth',
-    clanCharacter: 'Bobwhite',
-    clanColor: ['#EF4444', '#3B82F6', '#EF4444'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Luz',
-    lastName: 'Smith',
-    unitNumber: 319,
-    scoutingAmericaId: '67890',
-    scoutType: 'Youth',
-    clanCharacter: 'Bear',
-    clanColor: ['#3B82F6', '#F59E0B', '#FFFFFF'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Michael',
-    lastName: 'Harris',
-    unitNumber: 82,
-    scoutingAmericaId: '49123',
-    scoutType: 'Youth',
-    clanCharacter: 'Buffalo',
-    clanColor: ['#10B981', '#3B82F6', '#10B981'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Emily',
-    lastName: 'Rivers',
-    unitNumber: 443,
-    scoutingAmericaId: '98342',
-    scoutType: 'Adult',
-    clanCharacter: 'Eagle',
-    clanColor: ['#FFFFFF', '#F59E0B', '#FFFFFF'],
-    ceremonyDate: '2025-10-02',
-  },
-  {
-    firstName: 'Daniel',
-    lastName: 'Brooks',
-    unitNumber: 427,
-    scoutingAmericaId: '77412',
-    scoutType: 'Youth',
-    clanCharacter: 'Bobwhite',
-    clanColor: [],
-    ceremonyDate: '2025-10-02',
-  },
-]);
 
 const selectedScouts = ref<Scout[]>([]);
 const isDrawerOpen = ref(false);
@@ -270,17 +102,17 @@ const closeDrawer = () => {
       </button>
     </div>
 
-    <div class="table-container">
-      <div v-if="selectedScouts.length > 0" class="selection-banner">
-        <span
-          >{{ selectedScouts.length }} of {{ scouts.length }} row(s)
-          selected.</span
-        >
-        <button class="link-btn" @click="selectedScouts = []">
-          Clear selection
-        </button>
-      </div>
+    <div v-if="pending" class="loading-state">
+      <Icon name="tabler:loader-2" class="spinner" />
+      <p>Loading scouts...</p>
+    </div>
 
+    <div v-else-if="error" class="error-state">
+      <Icon name="tabler:alert-circle" class="error-icon" />
+      <p>Failed to load scouts. Please try again.</p>
+    </div>
+
+    <div v-else class="table-container">
       <DataTable
         :columns="columns"
         :data="scouts"
@@ -290,29 +122,36 @@ const closeDrawer = () => {
         @select="handleSelection"
         @row-dblclick="handleRowClick"
       >
-        <!-- Custom cell for clan color -->
-        <template #cell-clanColor="{ value }">
-          <div class="clan-color-badges">
-            <div
-              v-for="(color, index) in value"
-              :key="index"
-              class="color-badge"
-              :style="{ backgroundColor: color }"
-              :title="color"
-            />
-            <span v-if="!value || value.length === 0" class="no-data">N/A</span>
-          </div>
+        <!-- Custom cell for scout type -->
+        <template #cell-scoutType="{ row }">
+          <span
+            v-if="row.scoutType"
+            class="badge"
+            :class="row.scoutType.name.toLowerCase()"
+          >
+            {{ row.scoutType.name }}
+          </span>
+          <span v-else class="no-data">—</span>
+        </template>
+
+        <!-- Custom cell for clan character -->
+        <template #cell-clanCharacter="{ row }">
+          <span v-if="row.clanCharacter">{{ row.clanCharacter.name }}</span>
+          <span v-else class="no-data">—</span>
+        </template>
+
+        <!-- Custom cell for phone -->
+        <template #cell-phone="{ value }">
+          <span v-if="value">{{ value }}</span>
+          <span v-else class="no-data">—</span>
         </template>
 
         <!-- Custom cell for ceremony date -->
         <template #cell-ceremonyDate="{ value }">
-          <span v-if="value" class="date-value">{{ value }}</span>
+          <span v-if="value" class="date-value">{{
+            new Date(value).toLocaleDateString()
+          }}</span>
           <span v-else class="no-data">N/A</span>
-        </template>
-
-        <!-- Custom cell for scout type with badge -->
-        <template #cell-scoutType="{ value }">
-          <span class="badge" :class="value.toLowerCase()">{{ value }}</span>
         </template>
 
         <!-- Custom cell for Scouting America ID -->
@@ -403,6 +242,36 @@ const closeDrawer = () => {
   box-shadow: var(--shadow-md);
 }
 
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2xl);
+  gap: var(--spacing-md);
+  color: var(--text-secondary);
+}
+
+.spinner {
+  font-size: 2rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-icon {
+  font-size: 2rem;
+  color: #ef4444;
+}
+
 .table-container {
   width: 100%;
   height: 100%;
@@ -438,20 +307,6 @@ const closeDrawer = () => {
   text-decoration: underline;
 }
 
-.clan-color-badges {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-}
-
-.color-badge {
-  width: 20px;
-  height: 20px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-color);
-  flex-shrink: 0;
-}
-
 .badge {
   display: inline-flex;
   align-items: center;
@@ -464,12 +319,12 @@ const closeDrawer = () => {
 }
 
 .badge.youth {
-  background: hsla(197, 90%, 56%, 0.15);
+  background: color-mix(in srgb, var(--brand-primary) 15%, transparent);
   color: var(--brand-primary);
 }
 
 .badge.adult {
-  background: hsla(280, 70%, 60%, 0.15);
+  background: color-mix(in srgb, var(--brand-secondary) 15%, transparent);
   color: var(--brand-secondary);
 }
 

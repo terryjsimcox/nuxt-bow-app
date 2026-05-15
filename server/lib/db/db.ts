@@ -1,15 +1,30 @@
-import Database from 'better-sqlite3';
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import * as schema from './schema';
+import { drizzle } from 'drizzle-orm/mysql2';
+import mysql from 'mysql2/promise';
 
-let db: ReturnType<typeof drizzle> | null = null;
+// Optimized connection pool configuration
+const pool = mysql.createPool({
+  uri: process.env.DATABASE_URL!,
+  waitForConnections: true,
+  connectionLimit: 10, // Reduced for dev environment
+  queueLimit: 50, // Reduced for dev environment
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 0,
+  maxIdle: 5, // Reduced idle connections
+  idleTimeout: 10000, // Faster cleanup in dev (10s)
+});
 
-export const useDB = () => {
-  if (!db) {
-    const config = useRuntimeConfig();
-    const sqlite = new Database(config.dbPath);
-    db = drizzle({ client: sqlite, schema });
-  }
+// Graceful shutdown handler
+if (process.env.NODE_ENV === 'development') {
+  process.on('SIGTERM', async () => {
+    await pool.end();
+  });
+  process.on('SIGINT', async () => {
+    await pool.end();
+    process.exit(0);
+  });
+}
 
-  return db;
-};
+// Initialize drizzle without schema to reduce memory usage
+// Import specific tables only where needed in API routes
+export const db = drizzle(pool);
+export { pool }; // Export pool for graceful shutdown

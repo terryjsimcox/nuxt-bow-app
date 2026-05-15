@@ -1,15 +1,27 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import Database from 'better-sqlite3';
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import * as schema from './db/schema';
-import { useDB } from './db/db';
+import { db } from './db/db';
+import {
+  user,
+  session,
+  account,
+  verification,
+} from './db/schemas/tables/auth/auth-schema';
+
+// Minimal schema for better-auth adapter (only auth tables)
+const authSchema = {
+  user,
+  session,
+  account,
+  verification,
+};
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:5000',
   secret: process.env.BETTER_AUTH_SECRET!,
-  database: drizzleAdapter(useDB(), {
-    provider: 'sqlite',
+  database: drizzleAdapter(db, {
+    provider: 'mysql',
+    schema: authSchema,
   }),
   emailAndPassword: {
     enabled: true,

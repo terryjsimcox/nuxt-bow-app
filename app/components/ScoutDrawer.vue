@@ -37,10 +37,11 @@ const tabs = [
               {{ selectedScout?.firstName }} {{ selectedScout?.lastName }}
             </h2>
             <span
+              v-if="selectedScout?.scoutType"
               class="scout-type-badge"
-              :class="selectedScout?.scoutType.toLowerCase()"
+              :class="selectedScout.scoutType.name.toLowerCase()"
             >
-              {{ selectedScout?.scoutType }}
+              {{ selectedScout.scoutType.name }}
             </span>
           </div>
           <button
@@ -77,65 +78,139 @@ const tabs = [
             </div>
             <div class="detail-group">
               <label>Scout Type</label>
-              <p>{{ selectedScout?.scoutType }}</p>
+              <p>{{ selectedScout?.scoutType?.name || 'Not specified' }}</p>
             </div>
             <div class="detail-group">
               <label>Ceremony Date</label>
-              <p>{{ selectedScout?.ceremonyDate || 'Not specified' }}</p>
+              <p>
+                {{
+                  selectedScout?.ceremonyDate
+                    ? new Date(selectedScout.ceremonyDate).toLocaleDateString()
+                    : 'Not specified'
+                }}
+              </p>
             </div>
             <div class="detail-group">
               <label>Clan Character</label>
-              <p>{{ selectedScout?.clanCharacter || 'Not specified' }}</p>
+              <p>{{ selectedScout?.clanCharacter?.name || 'Not specified' }}</p>
             </div>
           </div>
 
           <!-- Contact Tab -->
           <div v-if="localActiveTab === 'contact'" class="tab-panel">
-            <p class="no-data-message">Contact information coming soon</p>
+            <div class="detail-group">
+              <label>Email</label>
+              <p>{{ selectedScout?.email || 'Not specified' }}</p>
+            </div>
+            <div class="detail-group">
+              <label>Phone</label>
+              <p>{{ selectedScout?.phone || 'Not specified' }}</p>
+            </div>
           </div>
 
           <!-- Scouting Tab -->
           <div v-if="localActiveTab === 'scouting'" class="tab-panel">
-            <div class="detail-group">
-              <label>Unit Number</label>
-              <p>{{ selectedScout?.unitNumber }}</p>
-            </div>
             <div class="detail-group">
               <label>Scouting America ID</label>
               <p class="id-value">
                 {{ selectedScout?.scoutingAmericaId || '—' }}
               </p>
             </div>
+            <div class="detail-group">
+              <label>Status</label>
+              <p>{{ selectedScout?.status }}</p>
+            </div>
           </div>
 
           <!-- Units Tab -->
           <div v-if="localActiveTab === 'units'" class="tab-panel">
-            <p class="no-data-message">Units information coming soon</p>
+            <div
+              v-if="selectedScout?.units && selectedScout.units.length > 0"
+              class="card-group"
+            >
+              <div
+                v-for="unit in selectedScout.units"
+                :key="unit.unitId"
+                class="detail-card"
+              >
+                <div class="detail-group">
+                  <label>Unit Number</label>
+                  <p>{{ unit.unitNumber || '—' }}</p>
+                </div>
+                <div class="detail-group">
+                  <label>Unit Type</label>
+                  <p>{{ unit.unitTypeName || '—' }}</p>
+                </div>
+                <div class="detail-group" v-if="unit.unitLeader">
+                  <label>Unit Leader</label>
+                  <p>{{ unit.unitLeader }}</p>
+                </div>
+                <div class="detail-group status">
+                  <label>Status</label>
+                  <span
+                    class="badge"
+                    :class="unit.isPrimary ? 'primary-unit' : 'secondary-unit'"
+                  >
+                    {{ unit.isPrimary ? 'Primary' : 'Secondary' }}
+                  </span>
+                </div>
+                <div class="detail-group" v-if="unit.joinedAt">
+                  <label>Joined</label>
+                  <p>{{ new Date(unit.joinedAt).toLocaleDateString() }}</p>
+                </div>
+                <div class="detail-group" v-if="unit.leftAt">
+                  <label>Left</label>
+                  <p>{{ new Date(unit.leftAt).toLocaleDateString() }}</p>
+                </div>
+              </div>
+            </div>
+            <p v-else class="no-data-message">No unit memberships found</p>
           </div>
 
           <!-- Beads Tab -->
           <div v-if="localActiveTab === 'beads'" class="tab-panel">
-            <div class="detail-group">
-              <label>Clan Color</label>
-              <div class="clan-color-badges">
-                <div
-                  v-for="(color, index) in selectedScout?.clanColor"
-                  :key="index"
-                  class="color-badge large"
-                  :style="{ backgroundColor: color }"
-                  :title="color"
-                />
-                <span
-                  v-if="
-                    !selectedScout?.clanColor ||
-                    selectedScout.clanColor.length === 0
-                  "
-                  class="no-data"
-                >
-                  N/A
-                </span>
+            <div
+              v-if="selectedScout?.awards && selectedScout.awards.length > 0"
+              class="card-group"
+            >
+              <div
+                v-for="award in selectedScout.awards"
+                :key="`${award.beadId}-${award.awardedAt}`"
+                class="detail-card"
+              >
+                <div class="detail-group">
+                  <label>Bead Name</label>
+                  <p class="bead-name">{{ award.beadName || 'Unknown' }}</p>
+                </div>
+                <div class="detail-group">
+                  <label>Description</label>
+                  <p class="bead-description">
+                    {{ award.beadDescription || 'No description' }}
+                  </p>
+                </div>
+                <div class="detail-group">
+                  <label>Quantity</label>
+                  <p>{{ award.quantity }}</p>
+                </div>
+                <div class="detail-group">
+                  <label>Date Earned</label>
+                  <p>{{ new Date(award.dateEarned).toLocaleDateString() }}</p>
+                </div>
+                <div class="detail-group">
+                  <label>Awarded At</label>
+                  <p>{{ new Date(award.awardedAt).toLocaleDateString() }}</p>
+                </div>
+                <div class="detail-group" v-if="award.event">
+                  <label>Event</label>
+                  <p>{{ award.event }}</p>
+                </div>
+                <div class="detail-group" v-if="award.notes">
+                  <label>Notes</label>
+                  <p class="notes">{{ award.notes }}</p>
+                </div>
               </div>
             </div>
+            <p v-else class="no-data-message">No beads awarded yet</p>
           </div>
 
           <!-- History Tab -->
@@ -218,12 +293,12 @@ const tabs = [
 }
 
 .scout-type-badge.youth {
-  background: hsla(197, 90%, 56%, 0.15);
+  background: color-mix(in srgb, var(--brand-primary) 15%, transparent);
   color: var(--brand-primary);
 }
 
 .scout-type-badge.adult {
-  background: hsla(280, 70%, 60%, 0.15);
+  background: color-mix(in srgb, var(--brand-secondary) 15%, transparent);
   color: var(--brand-secondary);
 }
 
@@ -479,6 +554,67 @@ const tabs = [
   background: transparent;
   color: var(--text-primary);
   border: 1px solid var(--border-color);
+}
+
+.action-btn.secondary:hover {
+  background: var(--bg-hover);
+  border-color: var(--brand-primary);
+}
+
+.card-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.detail-card {
+  padding: var(--spacing-lg);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  .detail-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .detail-group.status span {
+    display: inline-flex;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    align-self: flex-start;
+  }
+}
+
+.badge.primary-unit {
+  background: color-mix(in srgb, var(--brand-primary) 15%, transparent);
+  color: var(--brand-primary);
+}
+
+.badge.secondary-unit {
+  background: color-mix(in srgb, var(--text-tertiary) 15%, transparent);
+  color: var(--text-secondary);
+}
+
+.bead-name {
+  font-weight: 600;
+  color: var(--brand-primary);
+}
+
+.bead-description {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.notes {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 .action-btn.secondary:hover {

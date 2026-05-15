@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "NODE_OPTIONS=--max-old-space-size=8192 nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -16,8 +16,8 @@
   "dependencies": {
     "@pinia/nuxt": "^0.11.3",
     "better-auth": "^1.6.10",
-    "better-sqlite3": "^12.9.0",
     "drizzle-orm": "^0.45.2",
+    "mysql2": "^3.22.3",
     "nuxt": "^4.4.4",
     "pinia": "^3.0.4",
     "vue": "^3.5.33",
@@ -26,7 +26,7 @@
   "devDependencies": {
     "@iconify-json/tabler": "^1.2.33",
     "@nuxt/icon": "^2.2.1",
-    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.8.0",
     "drizzle-kit": "^0.31.10"
   }
 }
